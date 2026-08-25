@@ -1,4 +1,4 @@
-# Contributing to TODO: Project Name
+# Contributing to XOps
 
 ⭐ First off, thank you for considering contributing to this project! ⭐
 
@@ -68,7 +68,11 @@ What we expect:
 
 ### Prerequisites
 
-TODO: List prerequisites specific to your project
+- Node.js ≥ 20
+- npm
+
+No accounts, secrets, or wallets are needed — everything defaults to `mode: dry-run` and the
+checks run fully offline.
 
 ### Setup
 
@@ -79,25 +83,23 @@ TODO: List prerequisites specific to your project
 
 2. **Clone Your Fork**
    ```bash
-   git clone https://github.com/YOUR_USERNAME/TODO.git
-   cd TODO
+   git clone https://github.com/YOUR_USERNAME/XOps.git
+   cd XOps
    ```
 
 3. **Add Upstream Remote**
    ```bash
-   git remote add upstream https://github.com/AOSSIE-Org/TODO.git
+   git remote add upstream https://github.com/AOSSIE-Org/XOps.git
    ```
 
 4. **Install Dependencies**
    ```bash
    npm install
-   # or yarn install
-   # or pnpm install
    ```
 
-5. **Run the Project**
+5. **Run the Checks**
    ```bash
-   npm run dev
+   npm run check
    ```
 
 ## 🔄 Development Workflow
@@ -121,12 +123,13 @@ git checkout -b fix/your-bug-fix
 
 ### 3. Test Your Changes
 
-TODO: Add project-specific testing instructions
-
 ```bash
-npm test
-# or
+npm run check   # lint + layer-boundary check + dependency-count check + tests
+# or individually:
 npm run lint
+npm test
+npm run check:boundary
+npm run check:deps
 ```
 
 ### 4. Commit Your Changes
@@ -223,7 +226,9 @@ Steps to test the changes
 
 ## 📝 Code Style Guidelines
 
-TODO: Add project-specific code style guidelines
+See [AGENTS.md](./AGENTS.md) for the project's authoritative, non-negotiable rules — the layer
+boundary between `src/core`/`src/adapters` and the drivers, the dependency-count cap, and the
+idempotency conventions. CI enforces these on every push.
 
 ### General Guidelines
 
@@ -234,16 +239,11 @@ TODO: Add project-specific code style guidelines
 - Avoid code duplication
 - Avoid unnecessary complexity and minor over-optimization
 
-### JavaScript/TypeScript
+### TypeScript
 - Use ES6+ syntax
 - Prefer `const` over `let`, avoid `var`
 - Use arrow functions where appropriate
 - Follow ESLint rules
-
-### Python
-- Follow PEP 8 style guide
-- Use type hints where applicable
-- Write docstrings for functions/classes
 
 ## 🔧 Debugging Pre-commit Hooks
 
@@ -538,4 +538,4 @@ If you encounter issues not covered here:
 - Check for existing PRs before starting to avoid duplication, as there might PRs that didn't mention the related issue
 
 
-Thank you for contributing to TODO! Your efforts help make this project better for everyone. 🚀
+Thank you for contributing to XOps! Your efforts help make this project better for everyone. 🚀
