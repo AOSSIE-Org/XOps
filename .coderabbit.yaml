@@ -192,7 +192,7 @@ reviews:
       instructions: |
         GitHub Actions workflows (.github/workflows/**):
         - `permissions` should be scoped to the minimum the job needs — flag blanket `write-all` or a missing `permissions` block on a workflow that writes anything
-        - Third-party actions should be pinned to a full commit SHA or an explicit trusted version tag, never `@main`/`@master`
+        - Third-party actions must be pinned to a full commit SHA
         - `pull_request_target` combined with checking out and executing the PR's own branch code is a known secret-exfiltration risk — flag it
         - Secrets must never be echoed, logged, or interpolated into a shell command built from untrusted input (PR titles/bodies, branch names, issue comments)
         - Preserve this project's zero-secrets-by-default posture — flag any change that adds a required `secrets:` entry to the default/adopter-facing path (see AGENTS.md and REFERENCES.md §8)
