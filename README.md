@@ -4,19 +4,10 @@
 <!-- Organization Logo -->
 <div align="center" style="display: flex; align-items: center; justify-content: center; gap: 16px;">
   <img alt="AOSSIE" src="public/aossie-logo.svg" width="175">
-  <img src="public/todo-project-logo.svg" width="175" />
+  <img alt="XOps" src="public/XOps-logo.png" width="175">
 </div>
 
 &nbsp;
-
-<!-- Organization Name -->
-<div align="center">
-
-[![Static Badge](https://img.shields.io/badge/aossie.org/TODO-228B22?style=for-the-badge&labelColor=FFC517)](https://TODO.aossie.org/)
-
-<!-- Correct deployed url to be added -->
-
-</div>
 
 <!-- Organization/Project Social Handles -->
 <p align="center">
@@ -41,14 +32,13 @@
   <img src="https://img.shields.io/youtube/channel/subscribers/UCKVVLbawY7Gej_3o2WKsoiA?style=flat&logo=youtube&logoColor=white%20&logoSize=auto&labelColor=FF0000&color=FF0000" alt="Youtube Badge"></a>
 </p>
 
-
 <p align="center">
-  <a href="https://scorecard.dev/viewer/?uri=github.com/AOSSIE-Org/{repo}">
-    <img src="https://api.scorecard.dev/projects/github.com/AOSSIE-Org/{repo}/badge" alt="OpenSSF Scorecard"/>
+  <a href="https://scorecard.dev/viewer/?uri=github.com/AOSSIE-Org/XOps">
+    <img src="https://api.scorecard.dev/projects/github.com/AOSSIE-Org/XOps/badge" alt="OpenSSF Scorecard"/>
   </a>
   &nbsp;&nbsp;
   <a href="./BestPracticesChecklist.md">
-    <img src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2FAOSSIE-Org%2Frepo%2Fmain%2Fchecklist-status.json&query=%24.percent&suffix=%25&label=Best%20Practices&logo=openssf" alt="Best Practices"/>
+    <img src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2FAOSSIE-Org%2FXOps%2Fmain%2Fchecklist-status.json&query=%24.percent&suffix=%25&label=Best%20Practices&logo=openssf" alt="Best Practices"/>
   </a>
   &nbsp;&nbsp;
   <a href="https://github.com/gitleaks/gitleaks">
@@ -59,202 +49,104 @@
 ---
 
 <div align="center">
-<h1>TODO: Project Name</h1>
+<h1>XOps</h1>
 </div>
 
-[TODO](https://TODO.stability.nexus/) is a ... TODO: Project Description.
+**XOps** is a CI/CD-native value transfer engine, shipped as a versioned GitHub Action. A
+repository event (e.g. a merged PR) produces a payment intent, a human signs it, the workflow
+settles it on-chain, and a receipt is posted back — with no server operated by the project and no
+secrets required in the default configuration.
 
 ---
 
 ## 🚀 Features
 
-TODO: List your main features here:
-
-- **Feature 1**: Description
-- **Feature 2**: Description
-- **Feature 3**: Description
-- **Feature 4**: Description
+- **Runs in your CI, not ours** — ships as a GitHub Action (`uses: AOSSIE-Org/xops@v1`); the
+  maintaining project operates no backend and never holds funds.
+- **Safe by default** — `mode: dry-run` unless explicitly opted out; a fresh integration needs
+  zero secrets.
+- **Built on x402 v2** ([Linux Foundation standard](https://github.com/x402-foundation/x402)) —
+  first driver implements the `exact` scheme over EIP-3009 `transferWithAuthorization` (USDC).
+- **Strict layer boundary** — the core engine and adapters never import a chain library, hash
+  primitive, or token address; every rail lives behind a `SettlementDriver` in `src/drivers/`.
+  See [AGENTS.md](AGENTS.md) for the enforced invariants.
+  Adding a network is a config-only change, verified in CI by diffing that no core files changed.
+- **Idempotent by construction** — re-running a workflow reproduces the same settlement key;
+  `AUTH_ALREADY_USED` is treated as success, not failure.
+- **Minimal dependency surface** — runtime dependencies are capped at 2 packages
+  (`@noble/curves`, `@noble/hashes`), enforced in CI.
 
 ---
 
 ## 💻 Tech Stack
 
-TODO: Update based on your project
-
-### Frontend
-- React / Next.js / Flutter / React Native
-- TypeScript
-- TailwindCSS
-
-### Backend
-- Flask / FastAPI / Node.js / Supabase
-- Database: PostgreSQL / SQLite / MongoDB
-
-### AI/ML (if applicable)
-- LangChain / LangGraph / LlamaIndex
-- Google Gemini / OpenAI / Anthropic Claude
-- Vector Database: Weaviate / Pinecone / Chroma
-- RAG / Prompt Engineering / Agent Frameworks
-
-### Blockchain (if applicable)
-- Solidity / solana / cardano / ergo Smart Contracts
-- Hardhat / Truffle / foundry
-- Web3.js / Ethers.js / Wagmi
-- OpenZeppelin / alchemy / Infura
-
----
-
-## ✅ Project Checklist
-
-TODO: Complete applicable items based on your project type
-
-- [ ] **The protocol** (if applicable):
-   - [ ] has been described and formally specified in a paper.
-   - [ ] has had its main properties mathematically proven.
-   - [ ] has been formally verified.
-- [ ] **The smart contracts** (if applicable):
-   - [ ] were thoroughly reviewed by at least two knights of The Stable Order.
-   - [ ] were deployed to: [Add deployment details]
-- [ ] **The mobile app** (if applicable):
-   - [ ] has an _About_ page containing the Stability Nexus's logo and pointing to the social media accounts of the Stability Nexus.
-   - [ ] is available for download as a release in this repo.
-   - [ ] is available in the relevant app stores.
-- [ ] **The AI/ML components** (if applicable):
-   - [ ] LLM/model selection and configuration are documented.
-   - [ ] Prompts and system instructions are version-controlled.
-   - [ ] Content safety and moderation mechanisms are implemented.
-   - [ ] API keys and rate limits are properly managed.
+- **Runtime:** Node.js ≥ 20, TypeScript, bundled with `@vercel/ncc` into a committed `dist/`
+- **Distribution:** GitHub Action (`action.yml`, `using: node20`)
+- **Protocol:** [x402 v2](https://github.com/x402-foundation/x402) — `exact` scheme, EIP-3009 /
+  EIP-712, CAIP-2 network identifiers
+- **Chain (Tier 1 target):** Base Sepolia, USDC — see `assets/chains.json`
+- **CLI:** `npx xops verify | encode` — fully offline, no keys or network required
 
 ---
 
 ## 🔗 Repository Links
 
-TODO: Update with your repository structure
-
-1. [Main Repository](https://github.com/AOSSIE-Org/TODO)
-2. [Frontend](https://github.com/AOSSIE-Org/TODO/tree/main/frontend) (if separate)
-3. [Backend](https://github.com/AOSSIE-Org/TODO/tree/main/backend) (if separate)
+- [Main Repository](https://github.com/AOSSIE-Org/XOps)
 
 ---
 
-## 🏗️ Architecture Diagram
+## 🏗️ Architecture
 
-TODO: Add your system architecture diagram here
+Six layers, one rule: nothing in `src/core/**` or `src/adapters/**` may import a chain library,
+token address, RPC URL, or chain-specific primitive. See [AGENTS.md](AGENTS.md) for the full
+rationale and the CI-enforced invariants (I1–I13).
 
 ```
-[Architecture Diagram Placeholder]
+L5 RECEIPT       SettlementResponse → PR comment + machine-readable receipt
+L4 SETTLEMENT    driver registry: (scheme × network) → driver   ← only layer that knows rails
+L3 AUTHORIZATION PaymentPayload — who approved, cryptographically
+L2 INTENT        PaymentRequirements — what moves, to whom
+L1 POLICY        offline gates, no network
+L0 TRIGGER       repo event → Intent
 ```
-
-You can create architecture diagrams using:
-- [Draw.io](https://draw.io)
-- [Excalidraw](https://excalidraw.com)
-- [Lucidchart](https://lucidchart.com)
-- [Mermaid](https://mermaid.js.org) (for code-based diagrams)
-
-Example structure to include:
-- Frontend components
-- Backend services
-- Database architecture
-- External APIs/services
-- Data flow between components
 
 ---
 
-## 🔄 User Flow
-
-TODO: Add user flow diagrams showing how users interact with your application
-
-```
-[User Flow Diagram Placeholder]
-```
-
-### Key User Journeys
-
-TODO: Document main user flows:
-
-1. **User Journey 1**: Description
-   - Step 1
-   - Step 2
-   - Step 3
-
-2. **User Journey 2**: Description
-   - Step 1
-   - Step 2
-   - Step 3
-
-3. **User Journey 3**: Description
-   - Step 1
-   - Step 2
-   - Step 3
-
----
-
-## �🍀 Getting Started
+## 🍀 Getting Started
 
 ### Prerequisites
 
-TODO: List what developers need installed
+- Node.js ≥ 20
+- npm
 
-- Node.js 18+ / Python 3.9+ / Flutter SDK
-- npm / yarn / pnpm
-- [Any specific tools or accounts needed]
+### Using the Action
 
-### Installation
+No secrets are required for the default `dry-run` path:
 
-TODO: Provide detailed setup instructions
-
-#### 1. Clone the Repository
-
-```bash
-git clone https://github.com/AOSSIE-Org/TODO.git
-cd TODO
+```yaml
+# .github/workflows/reward.yml
+on:
+  issue_comment: { types: [created] }
+permissions: { issues: write, pull-requests: write }
+jobs:
+  pay:
+    if: startsWith(github.event.comment.body, '/send')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: AOSSIE-Org/xops@v1
 ```
 
-#### 2. Install Dependencies
+### Developing Locally
 
 ```bash
+git clone https://github.com/AOSSIE-Org/XOps.git
+cd XOps
 npm install
-# or
-yarn install
-# or
-pnpm install
+npm run check   # lint + layer-boundary check + dependency-count check + tests
 ```
 
-#### 3. Configure Environment Variables(.env.example)
-
-Create a `.env` file in the root directory:
-
-```env
-# Add your environment variables here
-API_KEY=your_api_key
-DATABASE_URL=your_database_url
-```
-
-#### 4. Run the Development Server
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
-
-#### 5. Open your Browser
-
-Navigate to [http://localhost:3000](http://localhost:3000) to see the application.
-
-For detailed setup instructions, please refer to our [Installation Guide](./docs/INSTALL_GUIDE.md) (if you have one).
-
----
-
-## 📱 App Screenshots
-
-TODO: Add screenshots showcasing your application
-
-|  |  |  |
-|---|---|---|
-| Screenshot 1 | Screenshot 2 | Screenshot 3 |
+See [CONTRIBUTING.md](./CONTRIBUTING.md) for the full contribution workflow and
+[ROADMAP.md](./ROADMAP.md) for what's being built and in what order.
 
 ---
 
@@ -268,24 +160,21 @@ Thank you for considering contributing to this project! Contributions are highly
 
 ## ✨ Maintainers
 
-TODO: Add maintainer information
-
-- [Maintainer Name](https://github.com/username)
-- [Maintainer Name](https://github.com/username)
+See [MAINTAINERS.md](./MAINTAINERS.md) for maintainers, mentors, and ideators.
 
 ---
 
 ## 📍 License
 
-This project is licensed under the GNU General Public License v3.0.
+This project is licensed under the MIT License.
 See the [LICENSE](LICENSE) file for details.
 
 ---
 
 ## 💪 Thanks To All Contributors
 
-Thanks a lot for spending your time helping TODO grow. Keep rocking 🥂
+Thanks a lot for spending your time helping XOps grow. Keep rocking 🥂
 
-[![Contributors](https://contrib.rocks/image?repo=AOSSIE-Org/TODO)](https://github.com/AOSSIE-Org/TODO/graphs/contributors)
+[![Contributors](https://contrib.rocks/image?repo=AOSSIE-Org/XOps)](https://github.com/AOSSIE-Org/XOps/graphs/contributors)
 
-© 2026 AOSSIE 
+© 2026 AOSSIE
